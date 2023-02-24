@@ -6,6 +6,7 @@ class AppRoutes {
 
   static Map<String, Widget Function(BuildContext)> routes = {
     'login': (BuildContext context) => LoginPage(),
+    'orders': (BuildContext context) => OrdersPage(),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
