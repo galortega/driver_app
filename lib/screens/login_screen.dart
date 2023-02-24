@@ -23,6 +23,7 @@ class LoginPage extends StatelessWidget {
                 maxLength: 4,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 24.0),
+                obscureText: true,
                 decoration: const InputDecoration(
                   hintText: 'Enter 4-digit code',
                 ),
