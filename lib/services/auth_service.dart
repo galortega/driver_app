@@ -30,4 +30,8 @@ class AuthService extends ChangeNotifier {
       return decodedResp['error'];
     }
   }
+
+  Future<String> readToken() async {
+    return await storage.read(key: 'token') ?? '';
+  }
 }
