@@ -1,4 +1,5 @@
 import 'package:driver_app/router/app_router.dart';
+import 'package:driver_app/services/orders_service.dart';
 import 'package:driver_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,9 +11,10 @@ class AppState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [ChangeNotifierProvider(create: (_) => AuthService())],
-        child: const MyApp());
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => AuthService()),
+      ChangeNotifierProvider(create: (_) => OrdersService())
+    ], child: const MyApp());
   }
 }
 

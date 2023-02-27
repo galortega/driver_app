@@ -37,8 +37,6 @@ class LoginPage extends StatelessWidget {
               onPressed: () async {
                 String code = codeController.text;
                 if (code.length == 4) {
-                  print('Logging in with code: $code');
-                  // TODO: Validate the code and log in the user
                   final authService =
                       Provider.of<AuthService>(context, listen: false);
 
