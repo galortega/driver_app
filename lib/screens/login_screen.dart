@@ -1,4 +1,6 @@
+import 'package:driver_app/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController codeController = TextEditingController();
@@ -23,6 +25,7 @@ class LoginPage extends StatelessWidget {
                 maxLength: 4,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 24.0),
+                obscureText: true,
                 decoration: const InputDecoration(
                   hintText: 'Enter 4-digit code',
                 ),
@@ -31,12 +34,46 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 16.0),
             ElevatedButton(
               child: const Text('Log In'),
-              onPressed: () {
+              onPressed: () async {
                 String code = codeController.text;
                 if (code.length == 4) {
+                  print('Logging in with code: $code');
                   // TODO: Validate the code and log in the user
+                  final authService =
+                      Provider.of<AuthService>(context, listen: false);
+
+                  final response = await authService.login(code);
                   // If successful, navigate to the orders page
-                  Navigator.pushReplacementNamed(context, 'orders');
+                  if (response == null) {
+                    void switchToBrightness() {
+                      Navigator.pushReplacementNamed(context, 'orders');
+                    }
+
+                    switchToBrightness();
+                  } else {
+                    // Show an error message
+                    void showError() {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Error'),
+                            content: Text(response),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+
+                    showError();
+                  }
                 } else {
                   // Show an error message
                   showDialog(
