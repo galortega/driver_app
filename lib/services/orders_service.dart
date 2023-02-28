@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:driver_app/models/models.dart';
 
 class OrdersService extends ChangeNotifier {
-  final String _baseUrl = "127.0.0.1:8000";
+  final String _baseUrl = "192.168.100.30:8000";
   final List<Order> orders = [];
   late Order selectedOrder;
 
