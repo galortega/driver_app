@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:driver_app/models/models.dart';
 
 class OrdersService extends ChangeNotifier {
-  final String _baseUrl = "192.168.100.30:8000";
+  final String _baseUrl = "10.28.1.96:8000";
   final List<Order> orders = [];
   late Order selectedOrder;
 
@@ -44,5 +44,36 @@ class OrdersService extends ChangeNotifier {
     notifyListeners();
 
     return orders;
+  }
+
+  Future<String?> deliverOrder(Order order) async {
+    isLoading = true;
+    notifyListeners();
+
+    final url = Uri.http(
+      _baseUrl,
+      'api/orders/${order.id}/deliver',
+    );
+    final resp = await http.put(url, headers: {
+      HttpHeaders.authorizationHeader:
+          'Bearer ${await storage.read(key: 'token')}',
+    });
+
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+
+    isLoading = false;
+    notifyListeners();
+
+    if (decodedResp.containsKey('error')) {
+      return decodedResp['error'];
+    } else {
+      return null;
+    }
+  }
+
+  // reset orders
+  void resetOrders() {
+    orders.clear();
+    notifyListeners();
   }
 }

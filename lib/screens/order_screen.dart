@@ -1,7 +1,9 @@
+import 'package:driver_app/services/orders_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:driver_app/models/models.dart';
 import 'package:driver_app/services/driver_location_service.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetails extends StatefulWidget {
   final Order order;
@@ -34,11 +36,44 @@ class OrderDetailsState extends State<OrderDetails> {
     });
   }
 
+  Future<String?> _deliverOrder() async {
+    final ordersService = Provider.of<OrdersService>(context, listen: false);
+    final resp = await ordersService.deliverOrder(widget.order);
+    ordersService.resetOrders();
+    ordersService.loadOrders();
+    return resp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Details'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.check),
+        onPressed: () {
+          _deliverOrder().then((resp) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(resp != null ? 'Error' : 'Success'),
+                  content: Text(resp ?? 'Order delivered'),
+                  actions: [
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, 'orders', (route) => false);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          });
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl = "192.168.100.30:8000";
+  final String _baseUrl = "10.28.1.96:8000";
   final storage = const FlutterSecureStorage();
 
   Future<String?> login(String code) async {

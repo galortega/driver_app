@@ -43,11 +43,11 @@ class LoginPage extends StatelessWidget {
                   final response = await authService.login(code);
                   // If successful, navigate to the orders page
                   if (response == null) {
-                    void switchToBrightness() {
+                    void switchToOrders() {
                       Navigator.pushReplacementNamed(context, 'orders');
                     }
 
-                    switchToBrightness();
+                    switchToOrders();
                   } else {
                     // Show an error message
                     void showError() {

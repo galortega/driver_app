@@ -19,19 +19,24 @@ class OrdersPage extends StatelessWidget {
         ),
         body:
             // add a ListView here
-            ListView.builder(
-          itemCount: ordersService.orders.length,
-          itemBuilder: (BuildContext context, int index) => GestureDetector(
-              onTap: () {
-                ordersService.selectedOrder = ordersService.orders[index];
-                Navigator.pushNamed(context, 'order');
-              },
-              child: ListTile(
-                title: Text("Order ${ordersService.orders[index].copy().id}"),
-                subtitle: Text(
-                    'Created at ${DateFormat('dd/MM/yyyy, HH:mm').format(DateTime.fromMillisecondsSinceEpoch(ordersService.orders[index].copy().createdAt * 1000))}'),
-                trailing: const Icon(Icons.arrow_forward_ios),
-              )),
-        ));
+            ordersService.orders.isEmpty
+                ? const Center(child: Text('No orders yet'))
+                : ListView.builder(
+                    itemCount: ordersService.orders.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        GestureDetector(
+                            onTap: () {
+                              ordersService.selectedOrder =
+                                  ordersService.orders[index];
+                              Navigator.pushNamed(context, 'order');
+                            },
+                            child: ListTile(
+                              title: Text(
+                                  "Order ${ordersService.orders[index].copy().id}"),
+                              subtitle: Text(
+                                  'Created at ${DateFormat('dd/MM/yyyy, HH:mm').format(DateTime.fromMillisecondsSinceEpoch(ordersService.orders[index].copy().createdAt * 1000))}'),
+                              trailing: const Icon(Icons.arrow_forward_ios),
+                            )),
+                  ));
   }
 }
